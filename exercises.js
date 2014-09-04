@@ -81,11 +81,11 @@ Array.prototype.myEach = function(funk) {
   }
 };
 
-var testFunction = function (param) {
-  console.log(param);
-};
-
-["a","b"].myEach(testFunction);
+// var testFunction = function (param) {
+//   console.log(param);
+// };
+//
+// ["a","b"].myEach(testFunction);
 
 Array.prototype.myMap = function(funk) {
   result = [];
@@ -95,8 +95,8 @@ Array.prototype.myMap = function(funk) {
   });
   return result;
 };
-
-var arr = [2,4,6];
+//
+// var arr = [2,4,6];
 
 // console.log(arr.myMap(function(a) { return 2 * a; }));
 
@@ -126,12 +126,77 @@ Array.prototype.bubbleSort = function () {
         sorted = false;
       }
     }
-    console.log("sorted " + sorted);
   }
 }
 
 var arr = [3,2,7,0];
-arr.bubbleSort();
-console.log(arr);
+arr.bubbleSort();//
+// console.log(arr);
 
+var substrings = function(string) {
+  result = [];
+  for (var i = 0; i < string.length; i++) {
+    for (var j = i + 1; j< string.length + 1; j++) {
+      result.push(string.substring(i,j));
+    }
+  }
+  return uniq(result);
+};
+//
+// console.log(substrings("banana"));
 
+var range = function(start, end) {
+  if (end < start) return [];
+  
+  if (start === end) return [start];
+  
+  return [start].concat(range(start+1, end));
+};
+
+// console.log(range(4, 4));
+
+var sumArray = function (arr) {
+  if (arr.length === 1) return arr[0];
+  
+  return sumArray(arr.slice(0, arr.length-1)) + arr[arr.length - 1];
+};
+//
+// console.log(sumArray([4,3,2,1]));
+
+var exponent1 = function (b, n) {
+  if (n === 0) return 1;
+  
+  return b * exponent1(b, n - 1);
+};
+
+// console.log(exponent1(2,3));
+
+var exponent2 = function (b, n) {
+  if (n === 0) return 1;
+  
+  if (n === 1) return b;
+  
+  if (n % 2 === 0) {
+    var total = exponent2(b, n / 2);
+    return total * total;
+  }
+  else {
+    var total = exponent2(b, (n - 1) / 2);
+    return b * total * total;
+  }
+  
+}
+
+// console.log(exponent2(2,5));
+
+var fib = function(n) {
+  if (n === 0) return [];
+  if (n === 1) return [0];
+  if (n === 2) return [0,1];
+  
+  var last = fib(n-1);
+  var value = last[last.length - 1] + last[last.length - 2];
+  return last.concat([value]);
+}
+
+console.log(fib(7));
