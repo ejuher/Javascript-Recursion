@@ -100,8 +100,8 @@ Array.prototype.myMap = function(funk) {
 
 // console.log(arr.myMap(function(a) { return 2 * a; }));
 
-Array.prototype.myInject = function(accum, funk) {
-  result = accum;
+Array.prototype.myInject = function(funk) {
+  var result = this[0];
   this.myEach(function(el) {
     result = funk(result, el);
   })
@@ -127,16 +127,17 @@ Array.prototype.bubbleSort = function () {
       }
     }
   }
+  return this;
 }
 
 var arr = [3,2,7,0];
-arr.bubbleSort();//
+sortedArr = arr.bubbleSort();//
 // console.log(arr);
 
 var substrings = function(string) {
   result = [];
   for (var i = 0; i < string.length; i++) {
-    for (var j = i + 1; j< string.length + 1; j++) {
+    for (var j = i + 1; j < string.length + 1; j++) {
       result.push(string.substring(i,j));
     }
   }
@@ -146,7 +147,7 @@ var substrings = function(string) {
 // console.log(substrings("banana"));
 
 var range = function(start, end) {
-  if (end < start) return [];
+  // if (end < start) return [];
   
   if (start === end) return [start];
   
@@ -199,4 +200,100 @@ var fib = function(n) {
   return last.concat([value]);
 }
 
-console.log(fib(7));
+// console.log(fib(7));
+
+var bsearch = function(arr, target) {
+  var mid_index = Math.floor(arr.length / 2);
+  if (arr[mid_index] === target) return mid_index;
+  if (arr.length === 1) return NaN;
+  
+  if (arr[mid_index] > target) {
+    return bsearch(arr.slice(0,mid_index), target);
+  }
+  else {
+    return mid_index + bsearch(arr.slice(mid_index, arr.length), target);
+  }
+};
+
+// console.log(bsearch([0,3,5,7,9], 0));
+
+
+var makeChange = function(amount, coins) {
+  if (amount < coins[coins.length - 1]) return [];
+  
+  var index = 0;
+  while (coins[index] > amount) {
+    index++;
+  }
+  amount -= coins[index];
+  return makeChange(amount, coins).concat([coins[index]]);
+}
+
+var makeChange2 = function(amount, coins) {
+  if (amount < coins[coins.length - 1]) return [];
+  
+  if (coins[0] > amount) {
+    return makeChange(amount, coins.slice(1,coins.length));
+  } else {
+    amount -= coins[0];
+    return makeChange(amount, coins).concat([coins[0]]);
+  }
+}
+
+var makeChange3 = function(amount, coins) {
+  if (amount < coins[coins.length - 1]) return [];
+  
+  var currentBest = new Array(amount);
+  for (var i = 0; i < coins.length; i++) {
+    if (coins[i] <= amount) {
+      current = [coins[i]].concat(makeChange3(amount - coins[i], coins));
+      if (current.length <= currentBest.length) {
+        currentBest = current;
+      }
+    } 
+  }
+  return currentBest;
+}
+
+
+// console.log(makeChange3(18, [16, 9, 1]));
+
+var mergeSort = function(arr) {
+  if (arr.length <= 1) return arr;
+  
+  var middle = Math.floor(arr.length / 2);
+  var half1 = mergeSort(arr.slice(0, middle));
+  var half2 = mergeSort(arr.slice(middle, arr.length));
+  
+  return merge(half1, half2);
+}
+
+var merge = function(arr1, arr2) {
+  var result = [];
+  while(arr1.length > 0 && arr2.length > 0) {
+    var elem = arr1[0] < arr2[0] ? arr1.shift() : arr2.shift();
+    result.push(elem);
+  }
+  return result.concat(arr1).concat(arr2);
+}
+
+// var a1 = [1, 3, 5, 7];
+// var a2 = [2, 4, 6, 8, 12, 13, 14];
+// console.log(merge(a1, a2));
+
+// console.log(mergeSort([4, 7, 0, 8, 2, 99, -9, 5, 55]));
+
+Array.prototype.subsets = function() {
+  if (this.length === 0) return [[]];
+
+  var thing = this.slice(0,this.length-1).subsets();
+  var thingPlus = [];
+  
+  for (var i = 0; i < thing.length; i++) {
+    thingPlus[i] = thing[i].concat([this[this.length-1]]);
+  }
+  
+  return thing.concat(thingPlus);
+};
+
+console.log([1, 2, 3].subsets());
